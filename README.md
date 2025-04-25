@@ -20,9 +20,9 @@ An interactive version of the classic **Connect Four** game, built with **Python
 
 ## 🤖 Minimax + Alpha-Beta Pruning:
 The AI uses the **Minimax** algorithm to evaluate game states and simulate optimal moves. **Alpha-Beta pruning** is applied to ignore unpromising branches, improving performance significantly at deeper levels.
+![image](https://github.com/user-attachments/assets/ecfe69b0-5318-4b53-bef8-896f793611f7)
 
 ## 🚀 How to Run:
 ```bash
 pip install pygame
 python connect_four.py
-![image](https://github.com/user-attachments/assets/ecfe69b0-5318-4b53-bef8-896f793611f7)
