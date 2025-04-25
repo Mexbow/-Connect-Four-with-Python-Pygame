@@ -25,3 +25,4 @@ The AI uses the **Minimax** algorithm to evaluate game states and simulate optim
 ```bash
 pip install pygame
 python connect_four.py
+![image](https://github.com/user-attachments/assets/ecfe69b0-5318-4b53-bef8-896f793611f7)
