@@ -301,22 +301,6 @@ class Game:
         self.turn = AI if piece == PLAYER_PIECE else PLAYER
         self.ai_ready_time = pygame.time.get_ticks() + 350
 
-    def can_undo(self):
-        return self.anim is None and (self.turn == PLAYER or self.game_over) and \
-            any(p == PLAYER_PIECE for _, _, p in self.history)
-
-    def undo(self):
-        """Take back moves until the player's last move is removed."""
-        if not self.can_undo():
-            return
-        while self.history:
-            row, col, piece = self.history.pop()
-            self.board[row][col] = EMPTY
-            if piece == PLAYER_PIECE:
-                break
-        self.turn = PLAYER
-        self.game_over, self.message, self.win_cells = False, None, None
-
     def last_move_text(self):
         if not self.history:
             return "No moves yet"
@@ -349,9 +333,8 @@ async def main():
                      for i, (name, (_, _, desc)) in enumerate(LEVELS.items())]
     back_button = Button("Back", (WIDTH // 2, 300 + 3 * 110), GREY, button_font, (200, 64))
     bar_y = HEIGHT - 45
-    undo_button = Button("Undo", (WIDTH // 2 - 210, bar_y), GREEN, small_font, (180, 52))
-    restart_button = Button("New game", (WIDTH // 2, bar_y), ORANGE, small_font, (180, 52))
-    menu_button = Button("Levels", (WIDTH // 2 + 210, bar_y), GREY, small_font, (180, 52))
+    restart_button = Button("New game", (WIDTH // 2 - 110, bar_y), ORANGE, small_font, (180, 52))
+    menu_button = Button("Levels", (WIDTH // 2 + 110, bar_y), GREY, small_font, (180, 52))
 
     state = "menu"
     game = None
@@ -381,9 +364,7 @@ async def main():
             elif state == "game":
                 if event.type == pygame.MOUSEMOTION:
                     posx = event.pos[0]
-                if undo_button.clicked(event):
-                    game.undo()
-                elif restart_button.clicked(event):
+                if restart_button.clicked(event):
                     game = Game(game.level)
                 elif menu_button.clicked(event):
                     state = "levels"
@@ -471,8 +452,7 @@ async def main():
                 pygame.draw.line(screen, GREEN, cell_center(r1, c1), cell_center(r2, c2), 8)
 
             # bottom bar
-            undo_button.enabled = g.can_undo()
-            for b in (undo_button, restart_button, menu_button):
+            for b in (restart_button, menu_button):
                 b.draw(screen, mouse)
 
         pygame.display.flip()
